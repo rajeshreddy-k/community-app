@@ -10,6 +10,7 @@
             scope.hideAccrualTransactions = false;
             scope.isHideAccrualsCheckboxChecked = true;
             scope.loandetails = [];
+
             scope.updateCheckBoxStatus = function (){
                 scope.isHideAccrualsCheckboxChecked = !scope.isHideAccrualsCheckboxChecked;
             };
@@ -463,6 +464,11 @@
                 scope.viewReport = false;
             };
 
+            scope.backToLoanDetails = function () {
+                scope.previewRepayment = "";
+                scope.report = false;
+            }
+
             scope.viewLoanCollateral = function (collateralId){
                 location.path('/loan/'+scope.loandetails.id+'/viewcollateral/'+collateralId).search({status:scope.loandetails.status.value});
             };
@@ -478,6 +484,63 @@
             scope.viewLoanChargeDetails = function (chargeId) {
                 location.path('/loan/'+scope.loandetails.id+'/viewcharge/'+chargeId).search({loanstatus:scope.loandetails.status.value});
             };
+
+            scope.viewRepaymentDetails = function() {
+
+                delete scope.formData.charges;
+                scope.formData.disbursementData = [];
+
+                for(var i in scope.loandetails.disbursementDetails) {
+                    scope.loandetails.disbursementDetails[i].actualDisbursementDate = dateFilter(scope.loandetails.disbursementDetails[i].actualDisbursementDate, scope.df);
+
+                    if(scope.loandetails.disbursementDetails[i].actualDisbursementDate != null) {
+                        scope.actualDisbursement = new Date(scope.loandetails.disbursementDetails[i].actualDisbursementDate);
+                        scope.formData.disbursementData.push({
+                            expectedDisbursementDate: dateFilter(scope.actualDisbursement, scope.df),
+                            principal: scope.loandetails.disbursementDetails[i].principal
+                        });
+                    }
+                }
+
+                scope.formData.charges = [];
+                for(var i in scope.loandetails.charges) {
+                  if(scope.loandetails.charges[i].dueDate != null) {
+                      scope.chargeDueDate = new Date(scope.loandetails.charges[i].dueDate);
+                  }
+                    scope.formData.charges.push({chargeId: scope.loandetails.charges[i].chargeId, amount: scope.loandetails.charges[i].amount,
+                        dueDate: dateFilter(scope.chargeDueDate, scope.df)});
+                }
+
+                this.formData.locale = scope.optlang.code;
+                this.formData.dateFormat = scope.df;
+                this.formData.clientId = scope.loandetails.clientId;
+                this.formData.productId = scope.loandetails.loanProductId;
+                this.formData.principal = scope.loandetails.principal;
+                this.formData.loanTermFrequency = scope.loandetails.termFrequency;
+                this.formData.loanTermFrequencyType = scope.loandetails.termPeriodFrequencyType.id;
+                this.formData.numberOfRepayments = scope.loandetails.numberOfRepayments;
+                this.formData.repaymentEvery = scope.loandetails.repaymentEvery;
+                this.formData.repaymentFrequencyType = scope.loandetails.repaymentFrequencyType.id;
+                this.formData.interestRatePerPeriod = scope.loandetails.interestRatePerPeriod;
+                this.formData.amortizationType = scope.loandetails.amortizationType.id;
+                this.formData.interestType = scope.loandetails.interestType.id;
+                this.formData.interestCalculationPeriodType = scope.loandetails.interestCalculationPeriodType.id;
+                this.formData.transactionProcessingStrategyId = scope.loandetails.transactionProcessingStrategyId;
+                this.formData.maxOutstandingLoanBalance = scope.loandetails.repaymentSchedule.totalPrincipalExpected;
+                this.formData.loanType = angular.lowercase(scope.loandetails.loanType.value);
+                this.formData.expectedDisbursementDate = dateFilter(scope.actualDisbursement, scope.df);
+                scope.submitteddate = new Date(scope.loandetails.timeline.submittedOnDate);
+                this.formData.submittedOnDate = dateFilter(scope.submitteddate, scope.df);
+
+                if(scope.report == false){
+                    resourceFactory.loanResource.save({command: 'calculateLoanSchedule'}, this.formData, function (data) {
+
+                        scope.repaymentscheduleinfo = data;
+                    })
+                }
+                scope.previewRepayment = true;
+                scope.report = true;
+            }
 
             scope.viewprintdetails = function () {
                 //scope.printbtn = true;
