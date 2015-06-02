@@ -879,6 +879,8 @@
     "label.anchor.editglaccount": "Edit GL Account",
     "label.anchor.searchjournalentries": "Search Journal Entries",
     "label.anchor.accountclosure": "Account Closure",
+    "label.input.availabletags": "Available Tags",
+    "lable.input.selectedtags": "Selected Tags",
     "label.anchor.viewclosure": "View Closure",
     "label.anchor.viewtransaction": "View Transaction",
     "label.anchor.viewaccounttransferdetails": "View Account Transfer Details",
