@@ -495,12 +495,15 @@
 
                     if(scope.loandetails.disbursementDetails[i].actualDisbursementDate != null) {
                         scope.actualDisbursement = new Date(scope.loandetails.disbursementDetails[i].actualDisbursementDate);
+
                         scope.formData.disbursementData.push({
                             expectedDisbursementDate: dateFilter(scope.actualDisbursement, scope.df),
                             principal: scope.loandetails.disbursementDetails[i].principal
                         });
                     }
                 }
+
+                scope.expectedDisbursement = new Date(scope.loandetails.disbursementDetails[0].actualDisbursementDate);
 
                 scope.formData.charges = [];
                 for(var i in scope.loandetails.charges) {
@@ -528,7 +531,7 @@
                 this.formData.transactionProcessingStrategyId = scope.loandetails.transactionProcessingStrategyId;
                 this.formData.maxOutstandingLoanBalance = scope.loandetails.repaymentSchedule.totalPrincipalExpected;
                 this.formData.loanType = angular.lowercase(scope.loandetails.loanType.value);
-                this.formData.expectedDisbursementDate = dateFilter(scope.actualDisbursement, scope.df);
+                this.formData.expectedDisbursementDate = dateFilter(scope.expectedDisbursement, scope.df);
                 scope.submitteddate = new Date(scope.loandetails.timeline.submittedOnDate);
                 this.formData.submittedOnDate = dateFilter(scope.submitteddate, scope.df);
 
@@ -540,7 +543,19 @@
                 }
                 scope.previewRepayment = true;
                 scope.report = true;
+
             }
+
+            scope.printDiv = function(print) {
+
+                var printContents = document.getElementById(print).innerHTML;
+                var popupWin = window.open('', '_blank', 'width=300,height=300');
+                popupWin.document.open();
+                popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="styles/repaymentscheduleprintstyle.css" /></head><body onload="window.print()"> ' + printContents + '</body></html>');
+                popupWin.document.close();
+            }
+
+
 
             scope.viewprintdetails = function () {
                 //scope.printbtn = true;

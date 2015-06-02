@@ -11,31 +11,32 @@
         <div class="form-horizontal" ng-show="report">
 
             <api-validate></api-validate>
-            <div>
+            <div id="print">
+
                 <table class="table width100" ng-show="previewRepayment">
-                    <thead>
+                    <!--<thead>
                     <th colspan="3" scope="col"></th>
                     <th colspan="3" scope="col">{{'label.heading.loanamountandbalance' | translate}}</th>
                     <th colspan="2" scope="col">{{'label.heading.totalcostofloan' | translate}}</th>
                     <th colspan="2" scope="col"></th>
-                    </thead>
+                    </thead>-->
                     <tbody>
                     <tr>
-                        <td>#</td>
-                        <td>{{'label.heading.date' | translate}}</td>
-                        <td>{{'label.heading.days' | translate}}</td>
-                        <td>{{'label.heading.disbursement' | translate}}</td>
-                        <td>{{'label.heading.principaldue' | translate}}</td>
-                        <td>{{'label.heading.principalbalance' | translate}}</td>
-                        <td>{{'label.heading.interestdue' | translate}}</td>
-                        <td>{{'label.heading.fees' | translate}}</td>
-                        <td>{{'label.heading.penalty' | translate}}</td>
-                        <td>{{'label.heading.due' | translate}}</td>
+                        <th>#</th>
+                        <th>{{'label.heading.date' | translate}}</th>
+                        <!--<th>{{'label.heading.days' | translate}}</th>-->
+                        <th>{{'label.heading.disbursement' | translate}}</th>
+                        <th>{{'label.heading.principaldue' | translate}}</th>
+                        <th>{{'label.heading.principalbalance' | translate}}</th>
+                        <th>{{'label.heading.interestdue' | translate}}</th>
+                        <th>{{'label.heading.fees' | translate}}</th>
+                        <th>{{'label.heading.penalty' | translate}}</th>
+                        <th>{{'label.heading.due' | translate}}</th>
                     </tr>
                     <tr ng-repeat="period in repaymentscheduleinfo.periods">
                         <td>{{period.period}}</td>
                         <td>{{period.dueDate | DateFormat}}</td>
-                        <td>{{period.daysInPeriod}}</td>
+                        <!--<td>{{period.daysInPeriod}}</td>-->
                         <td>{{period.principalDisbursed | number}}</td>
                         <td>{{period.principalDue| number}}</td>
                         <td>{{period.principalLoanBalanceOutstanding| number}}</td>
@@ -44,10 +45,10 @@
                         <td>{{period.penaltyChargesDue| number}}</td>
                         <td>{{period.totalDueForPeriod| number}}</td>
                     </tr>
-                    <tfoot class="ui-widget-header">
+                    <tfoot id="total" class="ui-widget-header">
                     <tr>
                         <td colspan="2">{{'label.heading.total' | translate}}</td>
-                        <td>{{repaymentscheduleinfo.loanTermInDays}}</td>
+                        <!--<td>{{repaymentscheduleinfo.loanTermInDays}}</td>-->
                         <td>{{repaymentscheduleinfo.totalPrincipalDisbursed| number}}</td>
                         <td>{{repaymentscheduleinfo.totalPrincipalExpected| number}}</td>
                         <td></td>
@@ -68,6 +69,7 @@
                 </div>
 
             </div>
+            <button ng-click="printDiv('print');">Print Div</button>
 
 
         	<div class="form-group" ng-show="viewLoanReport">
