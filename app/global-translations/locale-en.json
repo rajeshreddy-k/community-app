@@ -198,6 +198,7 @@
     "label.button.deselectAll": "Deselect All",
     "label.button.clientpayments": "Client Payments",
     "label.button.submitandprint": "Submit And Print",
+    "label.button.viewReport": "View Report",
 
 
     "#Misc Labels": "..",
