@@ -512,6 +512,9 @@
                     scope.formData.charges.push({chargeId: scope.loandetails.charges[i].chargeId, amount: scope.loandetails.charges[i].amount,
                         dueDate: dateFilter(scope.chargeDueDate, scope.df)});
                 }
+                if(scope.loandetails.group.id != ''){
+                    this.formData.groupId = scope.loandetails.group.id;
+                }
 
                 this.formData.locale = scope.optlang.code;
                 this.formData.dateFormat = scope.df;
