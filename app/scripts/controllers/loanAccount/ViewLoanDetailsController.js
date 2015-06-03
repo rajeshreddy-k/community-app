@@ -516,6 +516,10 @@
                     this.formData.groupId = scope.loandetails.group.id;
                 }
 
+                if(scope.loandetails.fixedEmiAmount != '') {
+                    this.formData.fixedEmiAmount = scope.loandetails.fixedEmiAmount;
+                }
+
                 this.formData.locale = scope.optlang.code;
                 this.formData.dateFormat = scope.df;
                 this.formData.clientId = scope.loandetails.clientId;

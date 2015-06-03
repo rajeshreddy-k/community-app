@@ -29,8 +29,6 @@
                         <th>{{'label.heading.principaldue' | translate}}</th>
                         <th>{{'label.heading.principalbalance' | translate}}</th>
                         <th>{{'label.heading.interestdue' | translate}}</th>
-                        <th>{{'label.heading.fees' | translate}}</th>
-                        <th>{{'label.heading.penalty' | translate}}</th>
                         <th>{{'label.heading.due' | translate}}</th>
                     </tr>
                     <tr ng-repeat="period in repaymentscheduleinfo.periods">
@@ -41,8 +39,6 @@
                         <td>{{period.principalDue| number}}</td>
                         <td>{{period.principalLoanBalanceOutstanding| number}}</td>
                         <td>{{period.interestDue| number}}</td>
-                        <td>{{period.feeChargesDue| number}}</td>
-                        <td>{{period.penaltyChargesDue| number}}</td>
                         <td>{{period.totalDueForPeriod| number}}</td>
                     </tr>
                     <tfoot id="total" class="ui-widget-header">
@@ -53,8 +49,6 @@
                         <td>{{repaymentscheduleinfo.totalPrincipalExpected| number}}</td>
                         <td></td>
                         <td>{{repaymentscheduleinfo.totalInterestCharged| number}}</td>
-                        <td>{{repaymentscheduleinfo.totalFeeChargesCharged| number}}</td>
-                        <td>{{repaymentscheduleinfo.totalPenaltyChargesCharged| number}}</td>
                         <td>{{repaymentscheduleinfo.totalRepaymentExpected| number}}</td>
                     </tr>
                     </tfoot>
