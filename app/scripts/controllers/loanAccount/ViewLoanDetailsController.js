@@ -494,21 +494,10 @@
                 scope.loanApprovedDate = new Date(scope.loandetails.timeline.approvedOnDate);
                 scope.loanApprovedDate = dateFilter(scope.loanApprovedDate, scope.df);
 
-               // scope.disbursedData = [];
-
                 if(scope.loandetails.disbursementDetails) {
                     for (var i in scope.loandetails.disbursementDetails) {
                         scope.loandetails.disbursementDetails[i].actualDisbursementDate = dateFilter(scope.loandetails.disbursementDetails[i].actualDisbursementDate, scope.df);
 
-                        /*if(scope.loandetails.disbursementDetails[i].actualDisbursementDate) {
-
-                            scope.disbursedDate = new Date(scope.loandetails.disbursementDetails[i].actualDisbursementDate);
-                            scope.disbursedAmount = scope.loandetails.disbursementDetails[i].principal;
-                            scope.disbursedData.push({
-                                disbursedDate: dateFilter(scope.disbursedDate, scope.df),
-                                principal: scope.disbursedAmount
-                            });
-                        }*/
                             if (scope.loandetails.disbursementDetails[i].actualDisbursementDate) {
                                 scope.disbursedDate = new Date(scope.loandetails.disbursementDetails[i].actualDisbursementDate);
                                 scope.disbursedDate = dateFilter(scope.disbursedDate, scope.df)
@@ -518,17 +507,6 @@
                                     principal: scope.loandetails.disbursementDetails[i].principal
                                 });
                             }
-                        /*else {
-                            scope.disbursedDate = new Date(scope.loandetails.timeline.actualDisbursementDate);
-                            scope.disbursedDate = dateFilter(scope.disbursedDate, scope.df)
-
-                            alert("test1" + scope.disbursedDate);
-                            scope.formData.disbursementData.push({
-                                expectedDisbursementDate: scope.disbursedDate,
-                                principal: scope.loandetails.totalPrincipalDisbursed
-                            });
-                            alert("test2"+principal);
-                        }*/
                     }
                 }
 
