@@ -10,6 +10,8 @@
             scope.hideAccrualTransactions = false;
             scope.isHideAccrualsCheckboxChecked = true;
             scope.loandetails = [];
+            scope.date.currentDate = new Date();
+            scope.currentDate = dateFilter(scope.date.currentDate, scope.df);
             scope.updateCheckBoxStatus = function (){
                 scope.isHideAccrualsCheckboxChecked = !scope.isHideAccrualsCheckboxChecked;
             };
@@ -489,20 +491,31 @@
                 delete scope.formData.charges;
                 scope.formData.disbursementData = [];
 
-                for(var i in scope.loandetails.disbursementDetails) {
-                    scope.loandetails.disbursementDetails[i].actualDisbursementDate = dateFilter(scope.loandetails.disbursementDetails[i].actualDisbursementDate, scope.df);
+                        scope.loanApprovedDate = new Date(scope.loandetails.timeline.approvedOnDate);
+                        scope.loanApprovedDate = dateFilter(scope.loanApprovedDate, scope.df);
 
-                    if(scope.loandetails.disbursementDetails[i].actualDisbursementDate != null) {
-                        scope.actualDisbursement = new Date(scope.loandetails.disbursementDetails[i].actualDisbursementDate);
+                        // scope.disbursedData = [];
 
-                        scope.formData.disbursementData.push({
-                            expectedDisbursementDate: dateFilter(scope.actualDisbursement, scope.df),
-                            principal: scope.loandetails.disbursementDetails[i].principal
-                        });
+                        if(scope.loandetails.disbursementDetails) {
+                            for (var i in scope.loandetails.disbursementDetails) {
+                                scope.loandetails.disbursementDetails[i].actualDisbursementDate = dateFilter(scope.loandetails.disbursementDetails[i].actualDisbursementDate, scope.df);
+                                if (scope.loandetails.disbursementDetails[i].actualDisbursementDate) {
+                                    scope.disbursedDate = new Date(scope.loandetails.disbursementDetails[i].actualDisbursementDate);
+                                    scope.disbursedDate = dateFilter(scope.disbursedDate, scope.df)
+
+                                    scope.formData.disbursementData.push({
+                                        expectedDisbursementDate: scope.disbursedDate,
+                                        principal: scope.loandetails.disbursementDetails[i].principal
+                                    });
+                                }
                     }
                 }
 
-                scope.expectedDisbursement = new Date(scope.loandetails.disbursementDetails[0].actualDisbursementDate);
+                if(scope.loandetails.disbursementDetails != '') {
+                    scope.expectedDisbursement = new Date(scope.loandetails.disbursementDetails[0].actualDisbursementDate);
+                }else{
+                    scope.expectedDisbursement = new Date(scope.loandetails.timeline.actualDisbursementDate);
+                }
 
                 scope.formData.charges = [];
                 for(var i in scope.loandetails.charges) {
@@ -512,8 +525,12 @@
                     scope.formData.charges.push({chargeId: scope.loandetails.charges[i].chargeId, amount: scope.loandetails.charges[i].amount,
                         dueDate: dateFilter(scope.chargeDueDate, scope.df)});
                 }
-                if(scope.loandetails.group.id != ''){
-                    this.formData.groupId = scope.loandetails.group.id;
+
+
+                if(scope.loandetails.group) {
+                    if (scope.loandetails.group.id != '') {
+                        this.formData.groupId = scope.loandetails.group.id;
+                    }
                 }
 
                 if(scope.loandetails.fixedEmiAmount != '') {
@@ -545,6 +562,29 @@
                     resourceFactory.loanResource.save({command: 'calculateLoanSchedule'}, this.formData, function (data) {
 
                         scope.repaymentscheduleinfo = data;
+
+                        scope.repaymentData = [];
+                        scope.disbursedData = [];
+                        for(var i in scope.repaymentscheduleinfo.periods) {
+                            if(scope.repaymentscheduleinfo.periods[i].period) {
+                                scope.repaymentData.push(scope.repaymentscheduleinfo.periods[i]);
+                            } else {
+                                scope.disbursedData.push(scope.repaymentscheduleinfo.periods[i]);
+                            }
+                        }
+
+                        scope.totalAmount = 0;
+                        for(var i in scope.disbursedData) {
+
+                            scope.dueDate = new Date(scope.disbursedData[i].dueDate);
+                            scope.dueDate = dateFilter(scope.dueDate, scope.df);
+
+                            scope.disbursedData[i].dueDate = scope.dueDate;
+
+                            scope.totalAmount = scope.totalAmount + scope.disbursedData[i].principalDisbursed;
+
+                        }
+
                     })
                 }
                 scope.previewRepayment = true;
@@ -557,7 +597,8 @@
                 var printContents = document.getElementById(print).innerHTML;
                 var popupWin = window.open('', '_blank', 'width=300,height=300');
                 popupWin.document.open();
-                popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="styles/repaymentscheduleprintstyle.css" /></head><body onload="window.print()"> ' +printContents+ '</body></html>');
+                popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="styles/repaymentscheduleprintstyle.css" />' +
+                '</head><body onload="window.print()">' + printContents + '</body></html>');
                 popupWin.document.close();
             }
 
