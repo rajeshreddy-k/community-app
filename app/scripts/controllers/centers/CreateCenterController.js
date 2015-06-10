@@ -64,7 +64,6 @@
                 });
             }
 
-            alert(scope.choice);
             scope.setChoice = function () {
                 if (this.formData.active) {
                     scope.choice = 1;
