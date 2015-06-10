@@ -11,15 +11,27 @@
             scope.restrictDate = new Date();
             scope.first.date = new Date();
             scope.addedGroups = [];
-            scope.choice = 1;
             scope.villageCount = {};
             scope.count = "";
+
+            scope.response = [];
+            scope.response.uiDisplayConfigurations = [];
+            scope.response.uiDisplayConfigurations.createCenter = [];
+            scope.response.uiDisplayConfigurations.createCenter.isReadOnlyField = [];
+
             resourceFactory.centerTemplateResource.get({staffInSelectedOfficeOnly:true},function (data) {
                 scope.offices = data.officeOptions;
                 scope.villageCount = data.villageCounter;
                 scope.staffs = data.staffOptions;
                 scope.groups = data.groupMembersOptions;
                 scope.formData.officeId = data.officeOptions[0].id;
+
+                if(scope.response.uiDisplayConfigurations.createCenter.isReadOnlyField.active == true){
+                    scope.choice = 1;
+                }
+                else{
+                    scope.choice = 0;
+                }
             });
 
             scope.$watch(scope.formData.officeId, function() {
@@ -52,6 +64,7 @@
                 });
             }
 
+            alert(scope.choice);
             scope.setChoice = function () {
                 if (this.formData.active) {
                     scope.choice = 1;
@@ -97,6 +110,10 @@
                 scope.formData.groupMembers = [];
                 for (var i in scope.addedGroups) {
                     scope.formData.groupMembers[i] = scope.addedGroups[i].id;
+                }
+
+                if(scope.response.uiDisplayConfigurations.createCenter.isReadOnlyField.active == true){
+                    scope.formData.active = true;
                 }
 
                 this.formData.locale = scope.optlang.code;

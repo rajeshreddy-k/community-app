@@ -762,8 +762,8 @@
     "#Villages": "....",
 
     "#Headings": "..",
-    "label.heading.editvillage": "Edit village",
-    "label.heading.createvillage": "Create village",
+    "label.heading.editvillage": "Edit Village",
+    "label.heading.createvillage": "Create Village",
     "label.heading.villageCode": "Village Code",
     "label.heading.taluk": "Taluk",
     "label.heading.district": "District",

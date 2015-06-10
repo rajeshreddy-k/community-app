@@ -15,7 +15,11 @@
             scope.formData.clientMembers = [];
             scope.forceOffice = null;
             scope.forceStaff = null;
-            scope.choice = 1;
+
+            scope.response = [];
+            scope.response.uiDisplayConfigurations = [];
+            scope.response.uiDisplayConfigurations.createGroup = [];
+            scope.response.uiDisplayConfigurations.createGroup.isReadOnlyField = [];
 
             var requestParams = {orderBy: 'name', sortOrder: 'ASC', staffInSelectedOfficeOnly: true};
             if (routeParams.officeId){
@@ -50,6 +54,16 @@
                         scope.formData.staffId = data.staffId;
                     }
                 }
+
+                if(scope.response.uiDisplayConfigurations.createGroup.isReadOnlyField.active == true){
+                    scope.choice = 1;
+
+                }
+                else{
+                    scope.choice = 0;
+
+                }
+
             });
 
             scope.viewClient = function (item) {
@@ -103,7 +117,11 @@
                 for (var i in scope.addedClients) {
                     scope.formData.clientMembers[i] = scope.addedClients[i].id;
                 }
-                this.formData.active = true;
+
+                if(scope.response.uiDisplayConfigurations.createGroup.isReadOnlyField.active == true){
+                    scope.formData.active = true;
+                }
+
                 if (this.formData.active) {
                     var reqDate = dateFilter(scope.first.date, scope.df);
                     this.formData.activationDate = reqDate;
@@ -120,7 +138,7 @@
                 }
                 this.formData.locale = scope.optlang.code;
                 this.formData.dateFormat = scope.df;
-                //this.formData.active = this.formData.active || false;
+                this.formData.active = this.formData.active || false;
 
                 resourceFactory.groupResource.save(this.formData, function (data) {
                     location.path('/viewgroup/' + data.resourceId);

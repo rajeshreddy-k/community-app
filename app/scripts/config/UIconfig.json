@@ -76,8 +76,14 @@
         "submittedOnDate": false,
         "externalId": true,
         "displayName": true,
-        "interestRatePerPeriod": false,
+        "interestRatePerPeriod": true,
         "displayName": true
+      }
+    },
+
+    "createVillage":{
+      "isReadOnlyField":{
+        "active": true
       }
     },
 
